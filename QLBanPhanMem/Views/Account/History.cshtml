@@ -1,0 +1,112 @@
+﻿@model QLBanPhanMem.Models.HistoryViewModel
+@{
+    ViewData["Title"] = "Lịch sử đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Account/Edit/@ViewBag.uid">Tài khoản</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Lịch sử đơn hàng</li>
+    </ol>
+</nav>
+<style>
+    table {
+        
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+<br />
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item" aria-current="true"><a href="/Account/Edit/@Model.accountModel.Uid">Tài khoản</a></li>
+            <li class="list-group-item active" aria-current="true"><a href="/Account/History/@Model.accountModel.Uid">Lịch sử đơn hàng</a></li>
+            <li class="list-group-item" aria-current="true"><a href="/Account/ChangePassword/@Model.accountModel.Uid">Mật khẩu và bảo mật</a></li>
+            <li class="list-group-item" aria-current="true"><a asp-action="FavoriteProduct" asp-controller="Account">Sản phẩm yêu thích</a></li>
+            <li class="list-group-item" aria-current="true"><a asp-action="ShareWebsite" asp-controller="Account">Giới thiệu bạn bè</a></li>
+        </ul>
+    </div>
+    <div class="col-md-8" style="padding:30px">
+        <h5>Lịch sử đơn hàng</h5>
+        <a>Hiển thị thông tin các sản phẩm bạn đã mua tại shop</a>
+        <br />
+        <br />
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th >Thời gian</th>
+                <th style="width:13%">Mã đơn hàng</th>
+                <th style="width:50%">Sản phẩm</th>
+                <th >Tổng tiền</th>
+                <th >Trạng thái</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var item in Model.hoaDonModel)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.THOIGIANLAP)
+                    </td>
+                        <td>
+                            <a href="/Account/OrderDetail/@item.MAHD" title="@Html.DisplayFor(modelItem => item.MAHD)">
+                                @if (item.MAHD.Length > 15)
+                                {
+                                    @item.MAHD.Substring(0, 15);
+                                    <span>...</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.MAHD)
+                                }
+                            </a>
+                        </td>
+
+                    <td>
+                        @{
+                            int displayedCount = 0; // Biến đếm số lượng sản phẩm đã hiển thị
+                        }
+
+                        @foreach (var item1 in Model.chiTietHoaDonModel)
+                        {
+                            if (item1.MAHD == item.MAHD)
+                            {
+                                @Html.DisplayFor(modelItem => item1.PhanMem.TENPM)
+                                <a>; <br> </a>
+                                displayedCount++;
+
+                                if (displayedCount >= 3)
+                                {
+                                    @:...
+                                    break; // Dừng vòng lặp
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TONGTIEN) ₫
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TINHTRANG)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    </div>

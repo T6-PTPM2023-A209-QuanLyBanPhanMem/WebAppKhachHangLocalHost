@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<QLBanPhanMem.Models.ChiTietHoaDonModel>
+@{
+    int dem = 0;
+}
+@{
+    int stt = 1;
+}
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Account/Edit/@ViewBag.uid">Tài khoản</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+    </ol>
+</nav>
+<div class="row" style="margin-top:20px;text-align:center">
+    <h2>Giỏ hàng của bạn</h2>
+        @if(ViewBag.dem==0||ViewBag.dem==null)
+        {
+            <p>
+                Giỏ hàng trống
+            </p>
+        }
+        else
+        {
+            <p>
+                Có @ViewBag.dem sản phẩm trong giỏ hàng
+            </p>
+        }        
+    <hr class="dots">
+    <br>
+</div>
+<div class="row">
+    @if(Model==null)
+    {
+        <a style="text-align:center;width:500px">Hãy <abbr href="/Product/Index">mua</abbr> ngay nhé </a>
+    }
+    else
+    {
+        <div class="col-md-8" align="center">         
+                <table class="table">
+                    <tr>
+                        <th>#</th>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @stt
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Product" asp-route-id="@item.MAPM">@Html.DisplayFor(modelItem => item.PhanMem.TENPM)</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SOLUONG)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.THANHTIEN) ₫
+                            </td>
+                            <td>
+                            <td>
+                                <form method="post" asp-action="Delete">
+                                    <input type="hidden" name="id" value="@item.MAPM" />
+                                    <input type="submit" value="Xóa" />
+                                </form>
+                            </td>                        
+                        </tr>
+                        stt++;
+                        dem = dem++;
+                    }
+                </table>           
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td colspan="2"><h4>Thông tin đơn hàng</h4></td>
+                    </tr>
+                    <tr>
+                        <td><h5 style="color:gray">Tổng tiền:</h5></td>
+                        <td>
+                            <h4 style="color:red">
+                                @ViewBag.tongtien ₫
+                                
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            Tổng tiền đã bao gồm 8% VAT.
+                            <br />
+                            Đơn hàng sẽ không được hoàn tiền nếu thanh toán.
+                            
+                       </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            
+                            <p><a style="color:red">@ViewBag.notice</a></p>
+                            <form method="post" action="@Url.Action("ProcessPayment", "Cart")">
+                                <!-- Các trường thông tin thanh toán ở đây -->
+                                <input type="submit" value="Thanh toán" class="btn btn-primary btn-block" />
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <a href="~/Product/Index" class="btn btn-secondary btn-block">Tiếp tục mua hàng</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }  
+</div>
+
+

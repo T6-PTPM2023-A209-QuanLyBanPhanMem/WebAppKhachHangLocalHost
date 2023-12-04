@@ -1,0 +1,36 @@
+﻿.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px; /* Khoảng cách giữa các thẻ card */
+    text-align:left;
+}
+
+.card {
+    width: 24%;
+    margin-bottom: 10px; /* Khoảng cách giữa các dòng */
+    transition: transform 0.2s
+}
+    .card:hover {
+        transform: scale(1.05); /* Khi hover, làm phóng to card */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Đổ bóng card */
+    }
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: inline-flex;
+}
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+    .filter-container > div {
+        margin: 10px;
+        white-space: nowrap; /* Ngăn các mục bên trong không bị xuống hàng */
+    }

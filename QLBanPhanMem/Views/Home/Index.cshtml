@@ -1,0 +1,234 @@
+﻿@model QLBanPhanMem.Models.TrangChuViewModel;
+@{
+   Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Phần mềm bản quyền";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="~/css/HomeIndex.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="row p-3">
+        <div class="col-3">
+            <div id="list-example" class="list-group">
+
+                @foreach (var item in ViewBag.PublisherList)
+                {
+                    <a class="list-group-item list-group-item-action" href="/Product/Index?nph=@item.Text">@item.Text</a>
+                }
+            </div>
+        </div>
+        <div class="col-6">
+            <div id="carouselExampleIndicators" class="carousel slide carousel-dark">
+                <div class="carousel-indicators">
+                    @{
+                        int dem = 0;
+                        foreach(var item in Model.BannerKMModel)
+                        {
+                            if(dem==0)
+                            {
+                                <button type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            }
+                            else
+                            {
+                                <button type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide-to="@dem" aria-label="Slide @dem "></button>
+
+                            }
+                            dem++;
+                        }
+                    }
+                </div>
+                <div class="carousel-inner rounded-3">
+                    @foreach(var item in Model.BannerKMModel)
+                    {
+                        var firstItem = Model.BannerKMModel.FirstOrDefault();
+                        if (item.MAPM == firstItem.MAPM.GetValueOrDefault())
+                        {
+                            <div class="carousel-item active">
+                                <a href="/Product/Details/@item.MAPM">
+                                    <img src="@item.HINHANH" width="100%" height="300px" alt="...">
+                                </a>
+                                
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item">
+                                <a href="/Product/Details/@item.MAPM">
+                                    <img src="@item.HINHANH" width="100%" height="300px" alt="...">
+                                </a>
+
+                            </div>
+                        }
+
+                    }
+                    
+                    
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+
+            </div>
+        </div>
+            <div class="col-3">
+                <div id="list-example" class="list-group">
+                    @foreach (var item in ViewBag.LoaiPMList)
+                    {
+                        <a class="list-group-item list-group-item-action" href="/Product/Index?type=@item.Text">@item.Text</a>
+                    }
+                </div>
+            </div>
+    </div>
+
+    
+
+    
+    <div class="col-12">
+        <h5>Phần mềm nổi bật</h5>
+        <p>Danh sách những phần mềm theo xu hướng mà có thể bạn sẽ thích</p>
+        <div class="card-container card-container-xh">
+            @foreach (var item in Model.GroupedResult)
+            {
+                <div class="card card-xh" onclick="navigateToLink('/Product/Details/@Html.DisplayFor(modelItem => item.MAPM)')">
+                    <img src="@item.HINHANH" class="card-img-top" height="170" width="284">
+                    <div class="card-body">
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.TENPM)</p>
+                        <p class="card-text"><b>@Html.DisplayFor(modelItem => item.DONGIA) ₫</b></p>
+                    </div>
+                </div>
+            }
+            <script>
+                function navigateToLink(link) {
+                    window.location.href = link;
+                }
+            </script>
+        </div>
+    </div>
+
+    <div class="col-12">
+    </div>
+
+    <div class="col-12">
+        <h5>Từ khóa nổi bật</h5>
+
+        <div class="card-container card-container-dx">
+            <div class="card card-dx" style="background-color:#3d5a80">
+                <div class="card-body">
+                    <p class="card-text"><a href="/Product/Index?type=Văn+phòng"><b>Văn phòng</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx" style="background-color:#98c1d9">
+                <div class="card-body">
+                    <p class="card-text"><a href="/Product/Index?type=Giải+trí"><b>Giải trí</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx" style="background-color:#ee6c4d">
+                <div class="card-body">
+                    <p class="card-text"><a href="/Product/Index?type=Học+tập"><b>Học tập</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx" style="background-color:#293241">
+                <div class="card-body">
+                    <p class="card-text"><a href="/Product/Index?nph=Microsoft"><b>Microsoft</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx" style="background-color:#293241">
+                <div class="card-body">
+                    <p class="card-text"><a href="/Product/Index?nph=Google"><b>Google</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx" style="background-color:#293241">
+                <div class="card-body">
+                    <p class="card-text"><a href="/Product/Index?nph=Spotify"><b>Spotify</b></a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+    <div class="col-12">
+        <h5>Giá phù hợp</h5>
+        <div class="card-container card-container-dx">
+            <div class="card card-dx">
+                <div class="card-body">
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=20000"><b>20.000đ</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx">
+                <div class="card-body">
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=50000"><b>50.000đ</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx">
+                <div class="card-body">
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=100000"><b>100.000đ</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx">
+                <div class="card-body">
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=200000"><b>200.000đ</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx">
+                <div class="card-body">
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=500000"><b>500.000đ</b></a></p>
+                </div>
+            </div>
+            <div class="card card-dx">
+                <div class="card-body">
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=1000000"><b>1.000.000đ</b></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @{
+        if (ViewBag.email == null)
+        {
+            <section class="mycontent1 bg-dark text-white py-4">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="~/image/yeucaudangnhap.svg" class="img-fluid" />
+                        </div>
+
+                        <div class="col-md-9">
+                            <p>
+                                Bạn chưa có tài khoản?
+                            </p>
+                            <p>
+                                Hãy tạo ngay một tài khoản để sử dụng đầy đủ các tính năng, tích lũy ưu đãi khi thanh toán các Phần mềm và tham gia vào chương trình Giới thiệu bạn bè nhận hoa hồng vĩnh viễn tại Up Modern.
+                            </p>
+                            <p>
+                                <a asp-area="" asp-controller="Account" asp-action="SignIn" style="text-decoration: none">
+                                    <button class="btn btn-primary">Đăng kí ngay</button>
+                                </a>
+
+                            <p>Hoặc bạn đã có tài khoản?</p>
+                                <a asp-area="" asp-controller="Account" asp-action="SignIn" style="text-decoration: none">
+                                    <span class="text-danger" style="font-size: 30px; font-weight: bold">Đăng nhập</span>
+                                </a>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        }
+    }
+    
+    <!-- Nội dung trang -->
+</body>
+</html>

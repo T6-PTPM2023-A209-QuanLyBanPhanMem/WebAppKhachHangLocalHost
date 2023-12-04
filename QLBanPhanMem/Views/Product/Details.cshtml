@@ -1,0 +1,240 @@
+﻿@model QLBanPhanMem.Models.PhanMemModel
+
+@{
+    ViewData["Title"] = @Html.DisplayFor(model => model.TENPM);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Product/Index">Sản phẩm</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.TENPM)</li>
+    </ol>
+</nav>
+<div class="row justify-content-center py-3">
+    <div class="col-md-4" style="padding-left:30px">
+        <img src="@Model.HINHANH" class="img img-fluid rounded" width="500">
+    </div>
+    <div class="col-md-5">
+        <p>Sản phẩm</p>
+        <h2>@Html.DisplayFor(model => model.TENPM)</h2>
+        @if(ViewBag.SoldOut =="Còn hàng")
+        {
+            <p>Tình trạng: <a style="color:green">@ViewBag.SoldOut</a></p>
+        }
+        else
+        {
+            <p>Tình trạng: <a style="color:red">@ViewBag.SoldOut</a></p>
+        }
+
+        <p>Thể loại: Phần mềm trả phí</p>
+        <p>Giá: <span class="text-danger fw-bold">@Html.DisplayFor(model => model.DONGIA)</span>  ₫</p>
+        <p>Nhà phát hành: @Html.DisplayFor(model => model.NhaPhatHanh.TENNPH)</p>
+        <p>Hạn sử dụng: @Html.DisplayFor(model => model.THOIHAN) @Html.DisplayFor(model => model.DONVITHOIHAN)</p>
+        @* <hr style="border-color: #5d5d5d; border-style: solid; border-width: 1px;">
+
+        <div>
+            <div class="col-md-4">
+                <p>Chọn số lượng </p>
+            </div>
+            <div class="col-md-8 input group form-outline" style="display:flex">
+                <button type="button" class="btn btn-link btn-sm"id="decreaseQuantity" style="margin-right:10px">
+                    -
+                    </button>
+                <input style="width:50px" type="number" name="quantity" id="quantity" min=1 max=5 class="form-control" value=1>
+
+                <button type="button" class="btn btn-link btn-sm" id="increaseQuantity">
+                    +
+                </button>
+            </div>
+        </div>      
+        <hr style="border-color: #5d5d5d; border-style: solid; border-width: 1px;"> *@
+
+        @* <button id="addToCartBtn" type="button" class="btn btn-primary" data-product-id="@Model.MAPM">Thêm</button> *@
+        @* <a href="@Url.Action("AddToCart", "Cart", new { productID = Model.MAPM, quantity =1 })" class="btn btn-primary" id="addToCartButton">Thêm vào giỏ</a> *@
+        <button class="btn btn-primary" id="addToCartButton" onclick="addToCart()">Thêm vào giỏ</button>
+
+        
+        <script>
+            function addToCart() {
+                var quantity = $("#quantity").val()// Lấy giá trị từ ô nhập liệu
+                var productID = @Model.MAPM; // Lấy giá trị từ Model.MAPM
+
+                // Tạo URL với tham số quantity và productID
+                var url = "@Url.Action("AddToCart", "Cart")" + "?productID=" + productID + "&quantity=" + quantity;
+
+                // Điều hướng người dùng đến URL
+                window.location.href = url;
+            }
+        </script>
+
+
+        @* <script>
+            document.getElementById("addToCartButton").addEventListener("click", function (e) {
+                e.preventDefault(); // Ngăn chặn hành vi mặc định khi người dùng nhấn liên kết
+                document.getElementById("addToCartForm").submit(); // Gửi biểu mẫu khi người dùng nhấn nút "Thêm vào giỏ"
+            });
+        </script> *@
+        <br/>
+        <br />
+        <p>
+            @ViewBag.MyData
+        </p>
+    </div>
+    <div class="col-md-3">
+        <p>Mã sản phẩm: @Html.DisplayFor(model => model.MAPM)</p>
+        <p>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://qlbanphanmem.azurewebsites.net/Product/Details/@Html.DisplayFor(model => model.MAPM)" target="_blank" rel="noopener noreferrer">
+                Chia sẻ qua Facebook
+            </a>
+        </p>
+        <p>
+            <a href="fb-messenger://share?link=https://qlbanphanmem.azurewebsites.net/Product/Details/@Html.DisplayFor(model => model.MAPM)" target="_blank" rel="noopener noreferrer" class="share-button">
+                Gửi qua Messenger
+            </a>
+        </p>
+        <p>
+            <a href="https://twitter.com/intent/tweet?url=https://qlbanphanmem.azurewebsites.net/Product/Details/@Html.DisplayFor(model => model.MAPM)" target="_blank" rel="noopener noreferrer" class="share-button twitter-button">
+                Chia sẻ qua X
+            </a>
+        </p>     
+    </div>
+ </div>   
+@* </div>
+    @if (ViewBag.email != null)
+    {
+        <a href="@Url.Action("AddToCart", "Cart", new { productID = Model.MAPM })" class="btn btn-dark" id="liveToastBtn">Thêm vào giỏ</a>
+        <button type="button" class="btn btn-primary" id="liveToastShowBtn">Hiển thị thông báo</button>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="..." class="rounded me-2" alt="...">
+                <strong class="me-auto">Bootstrap</strong>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+        </div>
+    </div>
+
+    }
+    else
+    {
+        <a asp-action="SignIn" asp-controller="Account">Thêm vào giỏ</a>
+    }
+</div> *@
+
+@* <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastShowBtn = document.getElementById('liveToastShowBtn');
+        const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+
+        if (toastShowBtn) {
+            toastShowBtn.addEventListener('click', () => {
+                toast.show();
+            });
+        }
+    });
+</script> *@
+<script>
+    $(document).ready(function () {
+        $("#addToCartBtn").click(function () {
+            var productID = $(this).data("@Model.MAPM");
+            $.ajax({
+                url: "@Url.Action("AddToCart", "Cart")",
+                type: "POST",
+                data: { productID: productID },
+                success: function (data) {
+                    // Xử lý phản hồi JSON tại đây
+                    if (data.success) {
+                        // Hiển thị thông báo hoặc cập nhật giao diện người dùng
+                        // Ví dụ: Hiển thị thông báo Toast
+                        showToast("Sản phẩm đã được thêm vào giỏ hàng");
+                    } else {
+                        // Xử lý lỗi
+                        // Ví dụ: Hiển thị thông báo lỗi Toast
+                        showToast("Lỗi khi thêm sản phẩm vào giỏ hàng");
+                    }
+                },
+                error: function () {
+                    // Xử lý lỗi kết nối
+                    // Ví dụ: Hiển thị thông báo lỗi Toast
+                    showToast("Lỗi kết nối");
+                }
+            });
+        });
+    });
+
+    function showToast(message) {
+        // Hiển thị thông báo Toast dựa trên thông điệp
+        // Sử dụng thư viện hiển thị Toast (ví dụ: Toastr)
+        toastr.success(message); // Hoặc toastr.error(message) cho thông báo lỗi
+    }
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#increaseQuantity").click(function () {
+            var quantity = parseInt($("#quantity").val());
+            $("#quantity").val(quantity + 1);
+        });
+
+        $("#decreaseQuantity").click(function () {
+            var quantity = parseInt($("#quantity").val());
+            if (quantity > 1) {
+                $("#quantity").val(quantity - 1);
+            }
+        });
+    });
+</script>
+
+@* <script>
+    $("#liveToastBtn").click(function () {
+        $.ajax({
+            url: "@Url.Action("AddToCart", "Cart")",
+            type: "POST",
+            data: { productID: productID },
+            success: function (data) {
+                if (data.success) {
+                    // Cập nhật tiêu đề và nội dung của thông báo toast
+                    updateToast("Thành công", data.message);
+                    // Hiển thị thông báo
+                    showToast();
+                    // Cập nhật giao diện người dùng tại đây (nếu cần)
+                } else {
+                    // Cập nhật tiêu đề và nội dung của thông báo toast
+                    updateToast("Lỗi", data.message);
+                    // Hiển thị thông báo
+                    showToast();
+                }
+            },
+            error: function () {
+                // Cập nhật tiêu đề và nội dung của thông báo toast
+                updateToast("Lỗi", "Lỗi kết nối");
+                // Hiển thị thông báo
+                showToast();
+            }
+        });
+    });
+
+    function updateToast(title, message) {
+        var toast = $("#liveToast");
+        var toastHeader = toast.find(".toast-header");
+        var toastBody = toast.find(".toast-body");
+
+        // Cập nhật tiêu đề và nội dung của thông báo
+        toastHeader.find("strong").text(title);
+        toastBody.text(message);
+    }
+
+    function showToast() {
+        var toast = new bootstrap.Toast($("#liveToast")); // Tạo một đối tượng toast
+        toast.show(); // Hiển thị thông báo
+    }
+
+</script> *@

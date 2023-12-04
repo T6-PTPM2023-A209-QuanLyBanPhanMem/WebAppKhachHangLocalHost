@@ -1,0 +1,113 @@
+﻿@model QLBanPhanMem.Models.AccountModel
+
+@{
+    ViewData["Title"] = "Thông tin cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Account/Edit/@ViewBag.uid">Tài khoản</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Thông tin</li>
+    </ol>
+</nav>
+<a>@ViewBag.notice</a>
+<br />
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item active" aria-current="true"><a href="/Account/Edit/@Model.Uid">Tài khoản</a></li>
+            <li class="list-group-item" aria-current="true"><a href="/Account/History/@Model.Uid">Lịch sử đơn hàng</a></li>
+            <li class="list-group-item" aria-current="true"><a href="/Account/ChangePassword/@Model.Uid">Mật khẩu và bảo mật</a></li>
+            <li class="list-group-item" aria-current="true"><a asp-action="FavoriteProduct" asp-controller="Account">Sản phẩm yêu thích</a></li>
+            <li class="list-group-item" aria-current="true"><a asp-action="ShareWebsite" asp-controller="Account">Giới thiệu bạn bè</a></li>
+        </ul>
+    </div>
+    <div class="col-md-8" style="padding:30px">
+        <h5>Tổng quan</h5>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <td><b>Số dư</b></td>
+                    <td><b>Email</b></td>
+                    <td><b>Tên đầy đủ</b></td>                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr>                
+                    <td>@Model.SurPlus ₫</td>
+                    <td>@Model.Email</td>
+                    <td>@Model.FullName</td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <td><b>Số căn cước</b></td>
+                    <td><b>Số điện thoại</b></td>
+                    <td><b>Địa chỉ</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.CCCD</td>
+                    <td>@Model.PhoneNumber</td>
+                    <td>@Model.Address</td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <h5>Cập nhật thông tin</h5>
+        <br />
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Uid" />
+            <input type="hidden" asp-for="Username" /> 
+            <input type="hidden" asp-for="SurPlus"/>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" readonly/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label">Tên đầy đủ</label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CCCD" class="control-label">Số căn cước</label>
+                <input asp-for="CCCD" class="form-control" />
+                <span asp-validation-for="CCCD" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label">Số điện thoại</label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label">Địa chỉ</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>           
+            @* <div class="form-group">
+                <label asp-for="Avatar" class="control-label">Hình đại diện</label>
+                <input asp-for="Avatar" class="form-control" />
+                <span asp-validation-for="Avatar" class="text-danger"></span>
+            </div> *@
+            <br/>
+            <div class="form-group">
+                <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@* <div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

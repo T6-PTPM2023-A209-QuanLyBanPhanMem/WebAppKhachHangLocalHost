@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Thanh toán thành công";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Account/Edit/@ViewBag.uid">Tài khoản</a></li>
+        <li class="breadcrumb-item"><a href="/Cart/Index">Giỏ hàng</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Thanh toán</li>
+    </ol>
+</nav>
+<div style="text-align:center;padding:20px">
+    
+    <h5>Thanh toán thành công!</h5>
+    <p>Một email về đơn hàng của bạn đã được gửi đến.</p>
+    <a>Xem chi tiết đơn hàng của bạn hoặc trở về trang chủ.</a>
+    <br/>
+    <div>
+        
+        <a href="/Account/OrderDetail/@ViewBag.maHD" class="btn btn-primary">Đơn hàng
+            </a>
+        <a href="/Home/Index" class="btn btn-secondary">Trang chủ</a>      
+    </div>
+</div>
+

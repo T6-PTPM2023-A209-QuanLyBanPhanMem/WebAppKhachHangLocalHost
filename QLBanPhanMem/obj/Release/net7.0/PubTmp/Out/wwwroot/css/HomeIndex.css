@@ -1,0 +1,28 @@
+﻿.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px; /* Khoảng cách giữa các thẻ card */
+    text-align: left;
+}
+
+.card {
+    width: 15%;
+    margin-bottom: 15px; /* Khoảng cách giữa các dòng */
+    transition: transform 0.2s
+}
+
+    .card:hover {
+        transform: scale(1.05); /* Khi hover, làm phóng to card */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Đổ bóng card */
+    }
+    .card-text{
+        text-align:center;
+        
+    }
+    .card-text>a{
+        color:white;
+    }
+.card-gia>a{
+    color:black;
+}

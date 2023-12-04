@@ -1,0 +1,159 @@
+﻿@model IEnumerable<QLBanPhanMem.Models.PhanMemModel>
+@{
+    ViewData["Title"] = "Tìm phần mềm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- Đường dẫn tới tệp CSS của bạn -->
+    <link rel="stylesheet" href="~/css/productIndex.css" />
+    <!-- Các thẻ khác trong phần đầu của trang (head) -->
+</head>
+<body>
+    <nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+        </ol>
+    </nav>
+    <div class="row justify-content-center py-3">
+        <div class="col-md-auto">
+            <select class="form-select" aria-label="Default select example" id="manph" style="width:130px" name="manph" asp-items="@ViewBag.PublisherList">
+                <option value="">Nhà phát hành</option>
+            </select>
+        </div>
+
+        <div class="col-md-auto">
+            <select class="form-select" aria-label="Default select example" id="theloai" style="width:130px" name="theloai" asp-items="@ViewBag.LoaiPMList">
+                <option value="">Thể loại</option>
+            </select>
+        </div>
+
+        <div class="col-md-auto">
+            <select style="width:130px" class="form-select" id="SortDrop">
+                <option value="">Sắp xếp</option>
+                <option value="1">Giá tăng dần</option>
+                <option value="2">Giá giảm dần</option>
+                <option value="3">Tên A-Z</option>
+                <option value="4">Tên Z-A</option>
+                <option value="6">Cũ nhất</option>
+                <option value="5">Mới nhất</option>
+            </select>
+        </div>
+
+        <div class="col-md-auto">       
+            <form style="display: flex;">
+                <div class="input-group mb-3" style="width:150px; margin-left:20px;">
+                    <input type="number" id="min" name="min" class="form-control" min="1" placeholder="Giá từ" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3" style="width:150px; margin-left:20px;">
+                    <input type="number" id="max" name="max" class="form-control" placeholder="Đến" aria-describedby="basic-addon1">
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-auto">
+            <button type="button" class="btn btn-primary" id="btnSearch">Lọc</button>
+        </div>
+    </div>
+
+
+    <hr />
+    <div class="card-container">
+        @foreach (var item in Model)
+        {
+            if(item!=null)
+            {
+                <div class="card" onclick="navigateToLink('/Product/Details/@Html.DisplayFor(modelItem => item.MAPM)')">
+                    <img src="@item.HINHANH" class="card-img-top" height="170" width="284">
+                    <div class="card-body">
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.TENPM)</p>
+                        <p class="card-text"><b>@Html.DisplayFor(modelItem => item.DONGIA) ₫</b></p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <h1>Không tìm thấy phần mềm</h1>
+            }
+            
+        }
+        <script>
+            function navigateToLink(link) {
+                window.location.href = link;
+            }
+        </script>
+    </div>
+    <hr />
+    <div class="pagination-container">
+        <nav aria-label="">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="/Product/Index?page=1">Đầu</a>
+                </li>
+
+
+                @for (int i = 0; i < ViewBag.TotalPage; i++)
+                {
+                    <li class="page-item"><a class="page-link" href="/Product/Index?page=@(i+1)">@(i + 1)</a></li>
+
+                }
+
+                <li class="page-item">
+                    <a class="page-link" href="/Product/Index?page=@ViewBag.End">Cuối</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    
+
+    <!-- Nội dung trang -->
+    <script>
+        document.getElementById("btnSearch").addEventListener("click", function () { 
+            //lấy text nhà phát hành
+            var selectElement = document.getElementById("manph");
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            if (selectedOption.text == "Nhà phát hành") {
+                var selectedNPH = "";
+            }
+            else
+{
+                var selectedNPH = selectedOption.text;
+            }
+
+            
+            //lấy text thể loại
+            var selectElement = document.getElementById("theloai");
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var selectedTheLoai = selectedOption.text;
+            var sort = document.getElementById("SortDrop").value;
+            var theloai = document.getElementById("theloai").value;
+            var min = document.getElementById("min").value;
+            var max = document.getElementById("max").value;
+            var filterUrl = "/Product/Index?";
+            var array = [];
+            if (selectedNPH != "") {
+                array.push("nph=" + selectedNPH);
+            }
+            if (sort != "") {
+                array.push("SortColumn=" + sort);
+            }
+            if (theloai != "") {
+                array.push("type=" + selectedTheLoai);
+            }
+            if (min != "" && max != "") {
+                array.push("min=" + min+"&max="+max);
+            }
+            filterUrl += array.join("&");
+            window.location.href=filterUrl;
+
+
+        })
+    </script>
+</body>
+</html>
